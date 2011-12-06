@@ -1,0 +1,13 @@
+Version 0.2-1
+
+  *  Fixed flickr.upload and matchFlickrName to work with a FlickrSession object.
+
+Version 0.2-0
+
+  *  Added a permission parameter to the authenticate() function to allow
+     "write" and "delete" in addition to the standard "read".
+
+  *  Upload functionality via flickr.upload()
+
+
+  

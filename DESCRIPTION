@@ -1,0 +1,17 @@
+Package: Rflickr
+Version: 0.2-1
+Title: R interface to Flickr API
+Description: This package allows R users to invoke
+  methods in the Flickr APIs (assuming they have 
+  a login and registered an application id). 
+  It is an example of client REST Web services
+  in R using RCurl. 
+  Interfaces to the individual methods in the Flickr API
+  are programmatically generated using code in the package.
+Depends: RCurl, XML, digest
+Suggests: RJSONIO
+Author: Duncan Temple Lang <duncan@wald.ucdavis.edu>
+Maintainer: Duncan Temple Lang <duncan@wald.ucdavis.edu>
+License: BSD
+Note: See Examples/Examples.xml in the XMLTechnologies book
+ for more details.

@@ -1,0 +1,14 @@
+exportPattern("^flickr\\..*")
+
+export(flickrSession)
+S3method(print, FlickrSession)
+S3method("$", FlickrSession)
+
+export(authenticate)
+
+# We export these so that the functions in FlickrFunctions
+# can see them. Otherwise, we have to change the namespaces on
+# them before we use them.
+export(addSignature, processFlickrResponse)
+
+

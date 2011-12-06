@@ -1,0 +1,36 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html> <head>
+<link rel=stylesheet href="../OmegaTech.css" >
+<title>Rflickr</title>
+</head>
+
+<body>
+<h1>The Rflickr Package</h1>
+<p align="right">Last Release:
+  <a href="@TAR_FILE@">@VERSION@</a> (<font color="red">@DATE@</font>)</p>
+
+This package provides an R interface to the <a
+href="http://www.flickr.com">Flickr</a> Web service functionaliy.
+There are 113 functions available that can be invoked from within R to
+get information about the contents and activity at Flickr.
+Information on these operations is available at
+<a href="http://www.flickr.com/services/api">http://www.flickr.com/services/api</a>
+along with links to details about setting up an API key.
+
+<p/>
+
+This is an example of accessing a REST Web service from within R via
+the <a href="http://www.omegahat.org/RCurl">RCurl</a> package.  Other
+Web services are also amenable to this sort of access.  And numerous
+others can be accessed via a <a href="http://">SOAP</a> interface
+using the <a href="http://www.omegahat.org/SSOAP">SSOAP</a> package
+for R.
+
+
+<hr>
+<address><a href="http://www.stat.ucdavis.edu/~duncan">Duncan Temple Lang</a>
+<a href=mailto:duncan@wald.ucdavis.edu>&lt;duncan@wald.ucdavis.edu&gt;</a></address>
+<!-- hhmts start -->
+Last modified: Fri Nov 28 12:31:55 PST 2008
+<!-- hhmts end -->
+</body> </html>

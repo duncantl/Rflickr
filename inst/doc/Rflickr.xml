@@ -1,0 +1,277 @@
+<article xmlns:r="http://www.r-project.org">
+<title>Rflickr: Getting started</title>
+
+<section>
+<title>Getting Started</title>
+<para>
+See section in Examples/Examples.xml which discusses how the code was
+developed and explains the steps in each call in much more detail.
+</para>
+
+<para>
+You will have to have a Flickr account and create an App ID at <ulink
+url="http://www.flickr.com/services/api/keys/apply/"/>.  When you do
+this, you will have the api_key and a "secret" value for that
+application.  Let's assume you assign these two values as strings
+(character vectors of length 1) to the R variables
+<r:var>api_key</r:var> and <r:var>secret</r:var>, respectively, e.g.
+<r:code>
+api_key = "abcdefghijklmnop"
+secret = "123456"
+</r:code>
+(They will contain a mix of letters and numbers and -.) There is much
+more information available at the URL above and <ulink
+url="http://www.flickr.com/services/api/auth.howto.desktop.html"/>.
+</para>
+
+<para>
+Now, load the Rflickr package
+<r:code>
+library(Rflickr)
+</r:code>
+The next thing we do is "login" to Flickr and
+create a session. And the first time we do this,
+we also have to grant read permission for 
+certain operations we might chose to perform.
+We use the <r:func>authenticate</r:func> function
+to do this.
+We call it with the <r:var>secret</r:var> and the 
+<r:var>api_key</r:var>:
+<r:code>
+tok = authenticate(api_key, secret)
+</r:code>
+This communicates with Flickr to get a unique "frob"
+and then displays a page in your browser which
+allows you to grant the appropriate permissions.
+Click on the "Ok, I'll allow it" button.
+You'll only have to do this once.
+If you don't get it done in time and the
+R function <r:func>authenticate</r:func> 
+raises an error, just keep going with
+the Flickr web page and grant the permissions.
+Then call <r:func>authenticate</r:func> again
+and it should be fine.
+</para>
+<para>
+Make certain that you assign the result of
+call <r:func>authenticate</r:func> to a
+variable. You will need it to make any calls
+to Flickr.
+</para>
+<para>
+Note also that you will need to 
+call <r:func>authenticate</r:func>
+for each R session.
+</para>
+</section>
+<section>
+<title>Calling Flickr functions</title>
+<para>
+So now we want to call flickr functions.
+Let's get the list of "hot"/popular things going
+on in Flickr at the moment.
+This is the API function flickr.tags.getHotList.
+There is an R function with this name
+and it takes the secret, token and api_key.
+There are two additional arguments you can supply
+but for this function, these are optional.
+So we can call the Flickr method with
+<r:code>
+hot = flickr.tags.getHotList(secret, token, api_key)
+</r:code>
+The result is a list with the top 20 items in Flickr.
+These are simply names such as "selfportraitthursday"
+and "eleventh".
+</para>
+
+<para>
+We'll find the number of photos that I have on Flickr in
+this account.
+We use <r:func>flickr.photos.getCounts</r:func> to do this.
+Like all (except one) Flickr API methods, this
+expects the secret, token and api_key as 
+arguments.
+We'll see how to avoid specifying these later in section
+<xref linkends="sect:session"/>.
+There are two optional arguments which specify the
+dates or dates taken.
+It turns out that you have to supply one of these.
+And the value is a string containing a comma-separated list
+of dates given by their UNIX-style timestamps.
+Not the most convenient, but easy enough.
+We'll look for photos from the last 3 weeks (i.e. 21 days):
+<r:code>
+now = Sys.time()
+dates = paste(as.integer(c(now  - 21*60*60*24, now)), collapse = ",")
+flickr.photos.getCounts(secret, tok, api_key, dates = dates)
+<r:output>
+$photocount
+       count     fromdate       todate 
+         "1" "1219438345" "1221252745" 
+</r:output>
+</r:code>
+</para>
+<para>
+We can also find out more information about "me"
+<r:code>
+flickr.people.getInfo(secret, tok, api_key, "30385402@N05")
+</r:code>
+</para>
+
+<para>
+To find other methods you might want to invoke,
+look at the page
+<ulink url="http://www.flickr.com/services/api/"/>
+</para>
+</section>
+<section id="sect:session">
+<title>An easier call interface</title>
+<para>
+We programmatically generated the code for all of the 113 API methods.
+That is one of the reasons the dates have to be specified in this
+slightly inconvenient form.  We mapped the API methods to regular R
+functions.  Since the secret, token and api_key must be specified in
+each call, we put these as the first parameters of each function.
+But it would be much more convenient to be able to specify these
+once and have them be added to the call each time.
+We could use global variables, but this would be bad.
+At the very least, it would mean we couldn't work with two  or more
+Flickr accounts simultaneously!
+</para>
+<para>
+What we do is create an object in R that maintains
+this authentication information for the Flickr session.
+We do this by calling the function
+<r:func>flickrSession</r:func> and passing it the
+secret, token and api_key:
+<r:code>
+session = flickrSession(secret, tok, api_key)
+</r:code>
+You can, of course, assign the result to any R variable.  The key
+thing is that you will now call the Flickr methods using the form
+<r:expr>session$getHotList()</r:expr> or
+<r:expr>session$getCounts(dates)</r:expr>.  Not only do we not have to
+supply the three authentication values, but we have also managed to
+avoid typing the prefixes "flickr.tags" and "flickr.photos" to
+identify the methods.  You can if you want, but you don't have to.  As
+with many things in R, we do partial matching to find the method
+corresponding to the name you type after the $.
+</para>
+<para>
+How do you know the order of the parameters for these functions?
+Well, they are the same as the regular API methods as documented on
+the Flickr API page, but the api_key parameter that is first in all of
+these is no longer relevant and is at the end of the R function's
+parameter list.  Similarly the secret and token are also added at the
+end. So the parameters that are unique to the particular method are
+now first.
+</para>
+</section>
+<section>
+<title>Other Operations</title>
+<para>
+We go to Flickr and find some photo of interest and 
+get the user_id of the photographer by looking at the link.
+The user_id is of the for    12345678@N98.
+We can find the information for that user with
+<r:code>
+i = s$people.getInfo("15451657@N05")
+names(i)
+<r:output>
+[1] "username"   "realname"   "location"   "photosurl"  "profileurl"
+[6] "mobileurl"  "photos"    
+</r:output>
+</r:code>
+This person has 345 photos 
+<r:code>
+i$photos
+</r:code>
+and the first was taken at 2007-10-22 20:54:03.
+</para>
+<para>
+We can find her/his photos via the call
+<r:code>
+p = s$getPublicPhotos("15451657@N05", "extended", per_page = 500)
+</r:code>
+This is a list of 345 "photo" elements.
+The first looks like
+<r:code>
+            id          owner         secret         server           farm 
+  "2863835340" "15451657@N05"   "d78612c7ca"         "3233"            "4" 
+         title       ispublic       isfriend       isfamily 
+    "4BAS1696"            "1"            "0"            "0" 
+</r:code>
+We can ask for more information to be included with each photo by using
+the <r:arg>extras</r:arg> argument for <r:func>getPublicPhotos</r:func>.
+<r:code>
+p = s$getPublicPhotos("15451657@N05", "extended", per_page = 500, 
+                      extras = "license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media")
+p[[1]]
+<r:output>
+p[[1]]
+                   id                 owner                secret 
+         "2863835340"        "15451657@N05"          "d78612c7ca" 
+               server                  farm                 title 
+               "3233"                   "4"            "4BAS1696" 
+             ispublic              isfriend              isfamily 
+                  "1"                   "0"                   "0" 
+              license            dateupload             datetaken 
+                  "0"          "1221598903" "2008-09-16 14:01:43" 
+ datetakengranularity             ownername            iconserver 
+                  "0"      "cheungthegreat"                   "0" 
+             iconfarm        originalsecret        originalformat 
+                  "0"          "ca655e4122"                 "jpg" 
+           lastupdate              latitude             longitude 
+         "1221598905"                   "0"                   "0" 
+             accuracy                  tags          machine_tags 
+                  "0"                    ""                    "" 
+              o_width              o_height                 views 
+               "1730"                "1080"                   "0" 
+                media          media_status 
+              "photo"               "ready" 
+</r:output>
+</r:code>
+(We might want to our function more convenient for specifying these but we cannot easily do this programmatically.
+But we could easily insert a new value for this function in <r:var>FlickrFunctions</r:var>.)
+</para>
+<para>
+Let's read the Exif information for the first three of these photos
+Since we are making several requests in rapid succession, it might be
+more efficient to reuse the same curl handle/channel.  This gives it
+the opportunity to keep the connection to the server open across
+successive calls.  This does save a small amount of time, but not at
+lot.
+<r:code>
+curl = getCurlHandle()
+exif = 
+ lapply(p[1:3],
+       function(ph) {
+          s$getExif(ph["id"], .curl = curl)
+       })
+</r:code>
+This is an example of where the xmlToList function doesn't give us 
+a good representation of the result.
+</para>
+<para>
+Let's get the comments on these photos
+<r:code>
+comments =lapply(p[1:10],function(ph) {
+                     s$photos.comments.getList(ph["id"])
+                 })
+</r:code>
+</para>
+<para>
+Let's find photos from around Berkeley.
+We could use flickr.places.find, 
+but instead we will use Yahoo's GeoCoder to find
+the latitude and longitude of a ZIP code.
+(You will need to have a Yahoo App ID.)
+Then we will pass those values to flickr.places.findByLatLon
+<r:code>
+ans = getForm("http://local.yahooapis.com/MapsService/V1/geocode", appid = yahoo.app.id, zip = "94707")    
+ans = xmlToList(xmlTreeParse(ans))$Result
+</r:code>
+This is not what flickr.places does!!!!
+</para>
+</section>
+</article>
