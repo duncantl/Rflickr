@@ -176,6 +176,132 @@ function (secret, auth_token, api_key, photo_id, format = character(),
     processFlickrResponse(ans, "flickr.favorites.remove", api_key, 
         secret, .convert = .convert, format = format)
 }
+`flickr.galleries.addPhoto` <-
+function (secret, auth_token, api_key, gallery_id, photo_id, 
+            format = character(), ..., .convert = NULL, .opts = list(...), 
+            .curl = getCurlHandle()) 
+{
+    args = addSignature(method = "flickr.galleries.addPhoto", 
+                        secret = secret, auth_token = auth_token, api_key = api_key, 
+                        gallery_id = gallery_id, photo_id = photo_id, format = format)
+    ans = getForm("http://api.flickr.com/services/rest/", .params = args, 
+                  .opts = .opts, curl = .curl)
+    processFlickrResponse(ans, "flickr.galleries.addPhoto", api_key, 
+                          secret, .convert = .convert, format = format)
+}
+`flickr.galleries.create` <-
+function (secret, auth_token, api_key, title, description = character(0), 
+            primary_photo_id, format = character(), ..., .convert = NULL, 
+            .opts = list(...), .curl = getCurlHandle()) 
+{
+    args = addSignature(method = "flickr.galleries.create", secret = secret, 
+                        auth_token = auth_token, api_key = api_key, title = title, 
+                        description = description, primary_photo_id = primary_photo_id, 
+                        format = format)
+    ans = getForm("http://api.flickr.com/services/rest/", .params = args, 
+                  .opts = .opts, curl = .curl)
+    processFlickrResponse(ans, "flickr.galleries.create", api_key, 
+                          secret, .convert = .convert, format = format)
+}
+`flickr.galleries.editMeta` <-
+function (secret, auth_token, api_key, gallery_id, title, description = character(0), 
+            format = character(), ..., .convert = NULL, .opts = list(...), 
+            .curl = getCurlHandle()) 
+{
+    args = addSignature(method = "flickr.galleries.editMeta", 
+                        secret = secret, auth_token = auth_token, api_key = api_key, 
+                        gallery_id = gallery_id, title = title, description = description, 
+                        format = format)
+    ans = getForm("http://api.flickr.com/services/rest/", .params = args, 
+                  .opts = .opts, curl = .curl)
+    processFlickrResponse(ans, "flickr.galleries.editMeta", api_key, 
+                          secret, .convert = .convert, format = format)
+}
+`flickr.galleries.editPhoto` <-
+function (secret, auth_token, api_key, gallery_id, photo_id, 
+            comment, format = character(), ..., .convert = NULL, .opts = list(...), 
+            .curl = getCurlHandle()) 
+{
+    args = addSignature(method = "flickr.galleries.editPhoto", 
+                        secret = secret, auth_token = auth_token, api_key = api_key, 
+                        gallery_id = gallery_id, photo_id = photo_id, comment=
+                        comment, format = format)
+    ans = getForm("http://api.flickr.com/services/rest/", .params = args, 
+                  .opts = .opts, curl = .curl)
+    processFlickrResponse(ans, "flickr.galleries.editPhoto", 
+                          api_key, secret, .convert = .convert, format = format)
+}
+
+`flickr.galleries.editPhotos` <-
+function (secret, auth_token, api_key, gallery_id, primary_photo_id, 
+            photo_ids, format = character(), ..., .convert = NULL, .opts = list(...), 
+            .curl = getCurlHandle()) 
+{
+    args = addSignature(method = "flickr.galleries.editPhotos", 
+                        secret = secret, auth_token = auth_token, api_key = api_key, 
+                        gallery_id = gallery_id, primary_photo_id = primary_photo_id, 
+                        photo_ids = photo_ids, format = format)
+    ans = getForm("http://api.flickr.com/services/rest/", .params = args, 
+                  .opts = .opts, curl = .curl)
+    processFlickrResponse(ans, "flickr.galleries.editPhotos", 
+                          api_key, secret, .convert = .convert, format = format)
+}
+
+`flickr.galleries.getInfo` <-
+function (secret, auth_token, api_key, gallery_id, format = character(), 
+            ..., .convert = NULL, .opts = list(...), .curl = getCurlHandle()) 
+{
+    args = addSignature(method = "flickr.galleries.getInfo", 
+                        secret = secret, auth_token = auth_token, api_key = api_key, 
+                        gallery_id = gallery_id, format = format)
+    ans = getForm("http://api.flickr.com/services/rest/", .params = args, 
+                  .opts = .opts, curl = .curl)
+    processFlickrResponse(ans, "flickr.galleries.getInfo", api_key, 
+                          secret, .convert = .convert, format = format)
+}
+`flickr.galleries.getList` <-
+function (secret, auth_token, api_key, user_id = character(0), 
+            format = character(), ..., .convert = NULL, .opts = list(...), 
+            .curl = getCurlHandle()) 
+{
+    args = addSignature(method = "flickr.galleries.getList", 
+                        secret = secret, auth_token = auth_token, api_key = api_key, 
+                        user_id = user_id, format = format)
+    ans = getForm("http://api.flickr.com/services/rest/", .params = args, 
+                  .opts = .opts, curl = .curl)
+    processFlickrResponse(ans, "flickr..getList", api_key, 
+                          secret, .convert = .convert, format = format)
+}
+`flickr.galleries.getPhotos` <-
+function (secret, auth_token, api_key, gallery_id, extras = character(0), 
+            privacy_filter = character(0), per_page = character(0), page = character(0), 
+            media = character(0), format = character(), ..., .convert = NULL, 
+            .opts = list(...), .curl = getCurlHandle()) 
+{
+   args = addSignature(method = "flickr.galleries.getPhotos", 
+                       secret = secret, auth_token = auth_token, api_key = api_key, 
+                       gallery_id = gallery_id, extras = extras, privacy_filter = privacy_filter, 
+                       per_page = per_page, page = page, media = media, format = format)
+   ans = getForm("http://api.flickr.com/services/rest/", .params = args, 
+                 .opts = .opts, curl = .curl)
+   processFlickrResponse(ans, "flickr.galleries.getPhotos", 
+                         api_key, secret, .convert = .convert, format = format)
+}
+`flickr.galleries.getListForPhoto` <-
+function (secret, auth_token, api_key, photo_id, extras = character(0), 
+            privacy_filter = character(0), per_page = character(0), page = character(0), 
+            media = character(0), format = character(), ..., .convert = NULL, 
+            .opts = list(...), .curl = getCurlHandle()) 
+{
+   args = addSignature(method = "flickr.galleries.getListForPhoto", 
+                      secret = secret, auth_token = auth_token, api_key = api_key, 
+                      photo_id = photo_id, extras = extras, privacy_filter = privacy_filter, 
+                      per_page = per_page, page = page, media = media, format = format)
+    ans = getForm("http://api.flickr.com/services/rest/", .params = args, 
+                .opts = .opts, curl = .curl)
+    processFlickrResponse(ans, "flickr.galleries.getListForPhoto", 
+                        api_key, secret, .convert = .convert, format = format)
+}
 `flickr.groups.browse` <-
 function (secret, auth_token, api_key, cat_id = character(0), 
     format = character(), ..., .convert = NULL, .opts = list(...), 

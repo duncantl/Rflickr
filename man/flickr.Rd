@@ -14,6 +14,16 @@
 \alias{flickr.favorites.getList}
 \alias{flickr.favorites.getPublicList}
 \alias{flickr.favorites.remove}
+\alias{flickr.galleries.addPhoto}
+\alias{flickr.galleries.create}
+\alias{flickr.galleries.editMeta}
+\alias{flickr.galleries.editPhoto}
+\alias{flickr.galleries.editPhotos}
+\alias{flickr.galleries.getInfo}
+\alias{flickr.galleries.getList}
+\alias{flickr.galleries.getListForPhoto}
+\alias{flickr.galleries.getList}
+\alias{flickr.galleries.getPhotos}
 \alias{flickr.groups.browse}
 \alias{flickr.groups.getInfo}
 \alias{flickr.groups.pools.add}
